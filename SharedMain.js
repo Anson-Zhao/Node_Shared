@@ -28,7 +28,6 @@ var con_FAW = mysql.createConnection({
     database: 'FAWv4'
 });
 
-
 var con_Water = new Influx.InfluxDB({
     database: 'FTAA_Water',
     host: 'aworldbridgelabs.com',
