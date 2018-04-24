@@ -452,5 +452,87 @@ app.get('/WaterGraph', function (req, res) {
     }
 });
 
+
+app.get('/firstlayer', function (req, res) {
+
+    res.setHeader("Access-Control-Allow-Origin", "*");
+
+    connection.query("SELECT FirstLayer From LayerMenu", function (err, result) {
+
+        console.log("recive and processing");
+
+        var JSONresult = JSON.stringify(result, null, "\t");
+        console.log(JSONresult);
+
+        res.send(JSONresult);
+
+        res.end();
+
+    });
+});
+
+app.get('/secondlayer', function (req, res) {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+
+    connection.query("SELECT SecondLayer From LayerMenu", function (err,result) {
+
+        console.log("recive and processing");
+
+        var JSONresult = JSON.stringify(result, null, "\t");
+
+        res.send(JSONresult);
+        res.end();
+
+    });
+
+});
+
+app.get('/thirdlayer', function (req, res) {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+
+    connection.query("SELECT ThirdLayer From LayerMenu", function (err,result) {
+
+        console.log("recive and processing");
+
+        var JSONresult = JSON.stringify(result, null, "\t");
+
+        res.send(JSONresult);
+        res.end();
+
+    });
+
+});
+
+
+app.get('/layername', function (req, res) {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+
+    connection.query("SELECT LayerName From LayerMenu", function (err,result) {
+
+        console.log("recive and processing");
+
+        var JSONresult = JSON.stringify(result, null, "\t");
+
+        res.send(JSONresult);
+        res.end();
+
+    });
+});
+
+app.get('/createlayer', function (req, res) {
+        res.setHeader("Access-Control-Allow-Origin", "*");
+
+        connection.query("SELECT * From CitySmart.LayerMenu", function (err,result) {
+            console.log("recive and processing");
+
+            var JSONresult = JSON.stringify(result, null, "\t");
+
+            res.send(JSONresult);
+            res.end();
+
+        });
+
+    });
+
 app.listen(port);
 console.log('The magic happens on port ' + port);
