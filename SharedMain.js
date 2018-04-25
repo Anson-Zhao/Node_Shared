@@ -12,7 +12,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 var con_CS = mysql.createConnection({
     multipleStatements: true,
-    host: '127.0.0.1',
+    host: '10.11.4.249',
     port: 3306,
     user: 'AppUser',
     password: 'Special888%',
@@ -21,7 +21,7 @@ var con_CS = mysql.createConnection({
 
 var con_FAW = mysql.createConnection({
     multipleStatements: true,
-    host: '127.0.0.1',
+    host: '10.11.4.249',
     port: 3306,
     user: 'AppUser',
     password: 'Special888%',
@@ -457,7 +457,7 @@ app.get('/firstlayer', function (req, res) {
 
     res.setHeader("Access-Control-Allow-Origin", "*");
 
-    connection.query("SELECT FirstLayer From LayerMenu", function (err, result) {
+    con_CS.query("SELECT FirstLayer From LayerMenu", function (err, result) {
 
         console.log("recive and processing");
 
@@ -474,7 +474,7 @@ app.get('/firstlayer', function (req, res) {
 app.get('/secondlayer', function (req, res) {
     res.setHeader("Access-Control-Allow-Origin", "*");
 
-    connection.query("SELECT SecondLayer From LayerMenu", function (err,result) {
+    con_CS.query("SELECT SecondLayer From LayerMenu", function (err,result) {
 
         console.log("recive and processing");
 
@@ -490,7 +490,7 @@ app.get('/secondlayer', function (req, res) {
 app.get('/thirdlayer', function (req, res) {
     res.setHeader("Access-Control-Allow-Origin", "*");
 
-    connection.query("SELECT ThirdLayer From LayerMenu", function (err,result) {
+    con_CS.query("SELECT ThirdLayer From LayerMenu", function (err,result) {
 
         console.log("recive and processing");
 
@@ -507,7 +507,7 @@ app.get('/thirdlayer', function (req, res) {
 app.get('/layername', function (req, res) {
     res.setHeader("Access-Control-Allow-Origin", "*");
 
-    connection.query("SELECT LayerName From LayerMenu", function (err,result) {
+    con_CS.query("SELECT LayerName From LayerMenu", function (err,result) {
 
         console.log("recive and processing");
 
@@ -522,7 +522,7 @@ app.get('/layername', function (req, res) {
 app.get('/createlayer', function (req, res) {
         res.setHeader("Access-Control-Allow-Origin", "*");
 
-        connection.query("SELECT * From CitySmart.LayerMenu", function (err,result) {
+        con_CS.query("SELECT * From CitySmart.LayerMenu", function (err,result) {
             console.log("recive and processing");
 
             var JSONresult = JSON.stringify(result, null, "\t");
