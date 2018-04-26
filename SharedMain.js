@@ -14,7 +14,6 @@ var port = 9090;
 var fileInputName = process.env.FILE_INPUT_NAME || "qqfile";
 var maxFileSize = process.env.MAX_FILE_SIZE || 0; // in bytes, 0 for unlimited
 
-
 app.use(cors({
     origin: '*',
     credentials: true
