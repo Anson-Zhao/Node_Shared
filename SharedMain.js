@@ -4,7 +4,21 @@ var path = require('path');
 var bodyParser = require('body-parser');
 var mysql = require('mysql');
 var Influx = require('influx');
+var cors = require('cors');
+var multiparty = require('multiparty');
+var fs = require("fs");
+var rimraf = require("rimraf");
+var mkdirp = require("mkdirp");
 var port = 9090;
+
+var fileInputName = process.env.FILE_INPUT_NAME || "qqfile";
+var maxFileSize = process.env.MAX_FILE_SIZE || 0; // in bytes, 0 for unlimited
+
+
+app.use(cors({
+    origin: '*',
+    credentials: true
+}));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -455,6 +469,9 @@ app.get('/WaterGraph', function (req, res) {
 });
 
 function onUpload(req, res, next) {
+    res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
+    console.log (req.headers.origin);
+
     var form = new multiparty.Form();
 
     form.parse(req, function(err, fields, files) {
@@ -482,6 +499,8 @@ var responseDataUuid = "",
     responseDataUuid2 = "",
     responseDataName2 = "";
 function onSimpleUpload(fields, file, res) {
+    res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
+
     var d = new Date(),
         uuid = d.getUTCFullYear() + "-" + ('0' + (d.getUTCMonth() + 1)).slice(-2) + "-" + ('0' + d.getUTCDate()).slice(-2) + "T" + ('0' + d.getUTCHours()).slice(-2) + ":" + ('0' + d.getUTCMinutes()).slice(-2) + ":" + ('0' + d.getUTCSeconds()).slice(-2) + "Z",
         responseData = {
@@ -518,6 +537,8 @@ function onSimpleUpload(fields, file, res) {
 }
 
 function onChunkedUpload(fields, file, res) {
+    res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
+
     console.log("Z");
     var size = parseInt(fields.qqtotalfilesize),
         uuid = fields.qquuid,
@@ -557,15 +578,19 @@ function onChunkedUpload(fields, file, res) {
 }
 
 function failWithTooBigFile(responseData, res) {
+    res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
+
     responseData.error = "Too big!";
     responseData.preventRetry = true;
     res.send(responseData);
 }
 
 function onDeleteFile(req, res) {
+    res.setHeader("Access-Control-Allow-Origin", "*"); // Allow cross domain header
+
     console.log("A");
     var uuid = req.params.uuid,
-        dirToDelete = "var/www/faw/current/uploadfiles/" + uuid;
+        dirToDelete = "uploadfiles/" + uuid;
     console.log(uuid);
     rimraf(dirToDelete, function(error) {
         if (error) {
@@ -637,7 +662,7 @@ function moveFile(destinationDir, sourceFile, destinationFile, success, failure)
 function moveUploadedFile(file, uuid, success, failure) {
     console.log("this is: " + uuid);
     // var destinationDir = uploadedFilesPath + uuid + "/",
-    var destinationDir = "var/www/faw/current/uploadfiles/",
+    var destinationDir = "uploadfiles/",
         fileDestination = destinationDir + uuid + "_" + file.name;
 
     moveFile(destinationDir, file.path, fileDestination, success, failure);
